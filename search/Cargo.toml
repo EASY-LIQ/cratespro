@@ -1,0 +1,13 @@
+[package]
+name = "search"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# third-party (第三方依赖, 不写具体版本号, 具体版本只在根目录 Cargo.toml 中出现)
+pgvector = { workspace = true, features = ["postgres"] }
+reqwest = { workspace = true, features = ["json"] }
+semver = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio-postgres = { workspace = true }

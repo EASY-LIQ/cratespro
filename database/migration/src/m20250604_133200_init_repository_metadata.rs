@@ -1,0 +1,123 @@
+use sea_orm_migration::{prelude::*, schema::*};
+#[derive(DeriveMigrationName)]
+pub struct Migration;
+
+#[async_trait::async_trait]
+impl MigrationTrait for Migration {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .create_table(
+                Table::create()
+                    .table(Metadata::Table)
+                    .if_not_exists()
+                    .col(uuid(Metadata::Id).primary_key())
+                    .col(string(Metadata::RepoId))
+                    .col(timestamp(Metadata::UpdatedAt))
+                    .col(boolean(Metadata::IsArchived))
+                    .col(string_null(Metadata::LicenseName))
+                    .col(integer(Metadata::DiskUsage))
+                    .col(integer(Metadata::StargazerCount))
+                    .col(integer(Metadata::ForkCount))
+                    .col(integer(Metadata::WatcherCount))
+                    .col(integer(Metadata::MentionableUserCount))
+                    .col(integer(Metadata::OpenIssues))
+                    .col(integer(Metadata::ClosedIssues))
+                    .col(integer(Metadata::OpenPullRequests))
+                    .col(integer(Metadata::ClosedPullRequests))
+                    .col(integer(Metadata::MergedPullRequests))
+                    .col(integer(Metadata::CommitCount))
+                    .col(timestamp(Metadata::CreatedAt))
+                    .col(timestamp(Metadata::PushedAt))
+                    .col(string_null(Metadata::PrimaryLanguage))
+                    .col(integer(Metadata::ReleaseCount))
+                    .col(string(Metadata::OwnerType))
+                    .col(integer(Metadata::LanguageTotalCount))
+                    .col(integer(Metadata::LanguageTotalSize))
+                    .col(text_null(Metadata::LanguagesJson))
+                    .col(double(Metadata::EvaluatedScore).not_null().default(0.0))
+                    .col(double(Metadata::PopularityScore).not_null().default(0.0))
+                    .col(double(Metadata::ActivityScore).not_null().default(0.0))
+                    .col(double(Metadata::MaintainabilityScore).not_null().default(0.0))
+                    .col(double(Metadata::MaturityScore).not_null().default(0.0))
+                    .col(double(Metadata::OpennessScore).not_null().default(0.0))
+                    .col(double(Metadata::GrowthScore).not_null().default(0.0))
+                    .col(double(Metadata::ComplianceScore).not_null().default(0.0))
+                    .col(double(Metadata::StructureScore).not_null().default(0.0))
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Programs::Table)
+                    .add_column(
+                        ColumnDef::new(Programs::MetadataUpdateState)
+                            .boolean()
+                            .not_null()
+                            .default(false),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+        Ok(())
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Programs::Table)
+                    .drop_column(Programs::MetadataUpdateState)
+                    .to_owned(),
+            )
+            .await?;
+        manager
+            .drop_table(Table::drop().table(Metadata::Table).to_owned())
+            .await?;
+        Ok(())
+    }
+}
+
+#[derive(DeriveIden)]
+enum Metadata {
+    Table,
+    Id,
+    RepoId,
+    IsArchived,
+    LicenseName,
+    DiskUsage,
+    StargazerCount,
+    ForkCount,
+    WatcherCount,
+    MentionableUserCount,
+    OpenIssues,
+    ClosedIssues,
+    OpenPullRequests,
+    ClosedPullRequests,
+    MergedPullRequests,
+    CommitCount,
+    CreatedAt,
+    UpdatedAt,
+    PushedAt,
+    PrimaryLanguage,
+    ReleaseCount,
+    OwnerType,
+    LanguageTotalCount,
+    LanguageTotalSize,
+    LanguagesJson,
+    EvaluatedScore,
+    PopularityScore,
+    ActivityScore,
+    MaintainabilityScore,
+    MaturityScore,
+    OpennessScore,
+    GrowthScore,
+    ComplianceScore,
+    StructureScore,
+}
+
+#[derive(DeriveIden)]
+enum Programs {
+    Table,
+    MetadataUpdateState,
+}

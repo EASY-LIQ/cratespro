@@ -1,0 +1,49 @@
+# 本地数据库地址
+[database_url]
+url = "postgresql://postgres:github123@localhost:5432/cratespro"
+
+#各评价算法得分所占权重
+[pass]
+popularity_weight = 1.0
+activity_weight = 1.0
+maintainability_weight = 1.0
+maturity_weight = 1.0
+openness_weight = 1.0
+
+# 流行度评价数据权重
+[popularity]
+star = 1.0
+fork = 1.0
+watch = 1.0
+
+# 社区活跃度评价数据权重
+[activity]
+pr = 1.0
+contributors = 1.0
+discussions = 1.0
+issues = 1.0
+
+# 维护度评价数据权重
+[maintainability]
+pushed_at = 1.0
+is_archived = 1.0
+commit_totalcount = 1.0
+releases_totalcount = 1.0
+
+# 成熟度评价数据权重
+[maturity]
+languages = 1.0
+push_releases = 1.0
+
+# 开放度评价数据权重
+[openness]
+license_info = 1.0
+
+# 成长度评价数据权重
+[growth]
+
+# 安全与合规性
+[compliance]
+
+# 文件结构完整度
+[structure]
